@@ -3,7 +3,6 @@
 TaskTrackerCLIApp is a CLI app to track tasks and manage to-do list.
 
 ## Features:
-______
 
 - Add, Update, and Delete tasks
 - Mark a task as in progress or done
@@ -13,7 +12,7 @@ ______
 - List all tasks that are in progress
 
 ## Installation:
-______
+
 1. Clone the repo
 ```bash
 git clone git@github.com:avinashee0012/TaskTrackerCLIApp.git
@@ -29,7 +28,7 @@ java TaskTrackerCLIApp <command> [arguments]
 ```
 
 ## Example:
-______
+
 ```bash
 # Adding a new task
 java TaskTrackerCLIApp add "Buy groceries"
