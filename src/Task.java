@@ -1,32 +1,30 @@
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Task {
 
     // ************ FIELDS ************
 
-    private static int id;
+    private int id;
     private String description;
     private Status status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // DateTime formatter
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
+    
 
     // ************ CONSTRUCTOR ************
 
     public Task(String description) {
-        id++;
+        setId(id);
         setDescription(description);
         this.status = Status.TODO;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
-    
+
     // ************ GETTERS ************
 
-    public static int getId() {
+    public int getId() {
         return id;
     }
 
@@ -48,8 +46,8 @@ public class Task {
 
     // ************ SETTERS ************
 
-    public static void setId(int id) {
-        id++;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setDescription(String description) {
@@ -70,20 +68,9 @@ public class Task {
 
     // ADDITIONAL METHODS
 
-    void printTaskToJson(){
-        System.out.println("{\"id\":\"" + id + "\", \"description\":\"" + description.strip() + "\", \"status\":\"" + status.toString() +
-                "\", \"createdAt\":\"" + createdAt.format(formatter) + "\", \"updatedAt\":\"" + updatedAt.format(formatter) + "\"}");
-    }
-
     @Override
     public String toString() {
-        System.out.println("********* Task Details: *********");
-        System.out.println("id: " + getId());
-        System.out.println("description: " + this.getDescription());
-        System.out.println("status: " + this.getStatus());
-        System.out.println("createdAt: " + this.getCreatedAt());
-        System.out.println("updatedAt: " + this.getUpdatedAt());
-        return "";
+        return "{id: " + getId() + ", description: " + this.getDescription() + ", status: " + this.getStatus() + ", createdAt: " + this.getCreatedAt() + ", updatedAt: " + this.getUpdatedAt() + "}";
     }
 
 }
