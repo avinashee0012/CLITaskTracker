@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,7 +13,20 @@ public class TaskManager {
     // ************ CONSTRUCTOR ************
 
     public TaskManager() {
+
         arrayList = new ArrayList<>();
+
+        // Creating a file "tasks.json"
+        File jsonFile = new File("tasks.json");
+        try {
+            jsonFile.createNewFile();
+        } catch (IOException e) {
+            System.out.println("Error while creating json.");
+            e.printStackTrace();
+        }
+
+        // Fetching data from tasks.json and saving to arraylist
+        this.getTasksFromJson();
     }
 
     // ************ METHODS ************
@@ -20,14 +34,10 @@ public class TaskManager {
     void add(String description) {
         Task task = new Task(description);
         arrayList.add(task);
-        // for (Task taskFromArraylist : arrayList) {
-        //     System.out.println(taskFromArraylist);
-        // }
-        this.storeTasksToJson();
     }
 
     void update(int id, String taskName) {
-        System.out.println("Inside update method");
+        
     }
 
     void delete(int id) {
@@ -43,7 +53,10 @@ public class TaskManager {
     }
 
     void list() {
-        getTasksFromJson();
+        System.out.println(arrayList.size());
+        for (int i = 0; i < arrayList.size(); i++) {
+            System.out.println("Index " + i + ": " +arrayList.get(i).getDescription());
+        }
     }
 
     void list(String filter) {
@@ -65,26 +78,22 @@ public class TaskManager {
 
     void storeTasksToJson() {
         try {
-            // Creating a file "tasks.json"
-            File jsonFile = new File("tasks.json");
-            jsonFile.createNewFile();
-
             // appending taskObject to tasks.json
             FileWriter jsonFileWriter = new FileWriter("tasks.json");
-
             jsonFileWriter.write("[\n");
             for (int i = 0; i < arrayList.size(); i++) {
-
+                // arrayList.get(i).setId(i);
                 // Creating a task as StringBuilder object for json
-                StringBuilder taskStringObject = new StringBuilder("{\"id\":\"" + (arrayList.get(i).getId()) + "\", \"description\":\""
-                        + arrayList.get(i).getDescription().strip() + "\", \"status\":\"" + arrayList.get(i).getStatus().toString()
-                        + "\", \"createdAt\":\"" + arrayList.get(i).getCreatedAt() + "\", \"updatedAt\":\""
-                        + arrayList.get(i).getUpdatedAt() + "\"}");
+                StringBuilder taskStringObject = new StringBuilder(
+                        "{\"id\":\"" + (arrayList.get(i).getId()) + "\", \"description\":\""
+                                + arrayList.get(i).getDescription().strip() + "\", \"status\":\""
+                                + arrayList.get(i).getStatus().toString()
+                                + "\", \"createdAt\":\"" + arrayList.get(i).getCreatedAt() + "\", \"updatedAt\":\""
+                                + arrayList.get(i).getUpdatedAt() + "\"}");
 
                 if (i != arrayList.size() - 1) {
                     taskStringObject = taskStringObject.append(",\n");
                 }
-
                 // Writing to json
                 jsonFileWriter.write(taskStringObject.toString());
             }
@@ -103,14 +112,32 @@ public class TaskManager {
             while (jsonReader.hasNextLine()) {
                 String data = jsonReader.nextLine();
                 // process this data from json, convert to task object and save to arraylist
-                // System.out.println(data);
-                String[] ObjectsInArray = data.replace("[", "").replace("]", "").replace("{", "").split("}");
+                if (data.equals("[") || data.equals("]") || data.equals("\n") || data.isEmpty() || data == null) {
+                    continue;
+                }
+                String[] ObjectsInArray = data.replace("{", "").split("},");
                 for (String individualObject : ObjectsInArray) {
-                    String[] individualObjectProperties =  individualObject.replace(",", "").split(" ");
-                    for (String string : individualObjectProperties) {
-                        System.out.println(string);
+                    if (individualObject.endsWith("}")) {
+                        individualObject = individualObject.replace("}", "");
                     }
-                    
+                    String[] individualObjectBrokenToArray = individualObject.replace(",", "").split(" ");
+
+                    Task task = new Task(individualObjectBrokenToArray[1].split("\":")[1].replace("\"", ""));
+                    task.setId(Integer.parseInt(individualObjectBrokenToArray[0].split("\":")[1].replace("\"", "")));
+                    switch (individualObjectBrokenToArray[2].split("\":")[1]) {
+                        case "TODO":
+                            task.setStatus(Status.TODO);
+                            break;
+                        case "PROGRESS":
+                            task.setStatus(Status.PROGRESS);
+                            break;
+                        case "DONE":
+                            task.setStatus(Status.DONE);
+                            break;
+                    }
+                    task.setCreatedAt(LocalDateTime.parse(individualObjectBrokenToArray[3].split("\":")[1].replace("\"", "")));
+                    task.setUpdatedAt(LocalDateTime.parse(individualObjectBrokenToArray[4].split("\":")[1].replace("\"", "")));
+                    arrayList.add(task);
                 }
             }
             jsonReader.close();

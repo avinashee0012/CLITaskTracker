@@ -1,12 +1,10 @@
 public class TaskTrackerCLIApp {
 
-    private static String command;
-
     public static void main(String[] args) throws Exception {
 
         TaskManager taskManager = new TaskManager(); 
 
-        command = args[0];
+        String command = args[0];
 
         switch (command) {
             case "add":
@@ -35,6 +33,6 @@ public class TaskTrackerCLIApp {
                 System.out.println("Invalid command");
         }
 
-        // taskManager.storeTasksToJson();
+        taskManager.storeTasksToJson();
     }
 }

@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 public class Task {
 
     // ************ FIELDS ************
-
+    // private static int globalId = 0;
     private int id;
     private String description;
     private Status status;
@@ -70,7 +70,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "{id: " + getId() + ", description: " + this.getDescription() + ", status: " + this.getStatus() + ", createdAt: " + this.getCreatedAt() + ", updatedAt: " + this.getUpdatedAt() + "}";
+        return "{id: " + this.getId() + ", description: " + this.getDescription() + ", status: " + this.getStatus() + ", createdAt: " + this.getCreatedAt() + ", updatedAt: " + this.getUpdatedAt() + "}";
     }
 
 }
