@@ -35,6 +35,6 @@ public class TaskTrackerCLIApp {
                 System.out.println("Invalid command");
         }
 
-        taskManager.storeTasksToJson();
+        // taskManager.storeTasksToJson();
     }
 }

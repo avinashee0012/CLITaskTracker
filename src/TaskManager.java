@@ -20,9 +20,10 @@ public class TaskManager {
     void add(String description) {
         Task task = new Task(description);
         arrayList.add(task);
-        for (Task taskFromArraylist : arrayList) {
-            System.out.println(taskFromArraylist);
-        }
+        // for (Task taskFromArraylist : arrayList) {
+        //     System.out.println(taskFromArraylist);
+        // }
+        this.storeTasksToJson();
     }
 
     void update(int id, String taskName) {
@@ -101,16 +102,16 @@ public class TaskManager {
             Scanner jsonReader = new Scanner(jsonFile);
             while (jsonReader.hasNextLine()) {
                 String data = jsonReader.nextLine();
-                
                 // process this data from json, convert to task object and save to arraylist
-                String[] taskObjectsArray = data.replace("[","").replace("]", "").split(",\n");
-                for (String taskObjectstring : taskObjectsArray) {
-                    String[] taskInArray = taskObjectstring.replace(",", "").replace("{", "").replace("}", "").split(" ");
-                    for (String brokenTaskProperties : taskInArray) {
-                        String id = brokenTaskProperties.split(":")[1];
+                // System.out.println(data);
+                String[] ObjectsInArray = data.replace("[", "").replace("]", "").replace("{", "").split("}");
+                for (String individualObject : ObjectsInArray) {
+                    String[] individualObjectProperties =  individualObject.replace(",", "").split(" ");
+                    for (String string : individualObjectProperties) {
+                        System.out.println(string);
                     }
+                    
                 }
-
             }
             jsonReader.close();
         } catch (FileNotFoundException e) {
