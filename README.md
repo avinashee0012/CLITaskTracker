@@ -16,7 +16,7 @@ TaskTrackerCLIApp is a CLI app to track tasks and manage to-do list.
 1. Clone the repo
 ```bash
 git clone git@github.com:avinashee0012/TaskTrackerCLIApp.git
-cd TaskTrackerCLIApp
+cd TaskTrackerCLIApp/src
 ```
 2. Compile the source code
 ```bash
@@ -27,7 +27,7 @@ javac TaskTrackerCLIApp.java Task.java TaskManager.java Status.java -d ./bin/
 java TaskTrackerCLIApp <command> [arguments]
 ```
 
-## Example:
+## Examples:
 
 ```bash
 # Adding a new task
