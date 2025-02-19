@@ -1,10 +1,14 @@
 public class TaskTrackerCLIApp {
-
+    private static String command;
     public static void main(String[] args) throws Exception {
 
-        TaskManager taskManager = new TaskManager(); 
+        try {
+            command = args[0];
+        } catch (Exception e) {
+            command = "";
+        }
 
-        String command = args[0];
+        TaskManager taskManager = new TaskManager(); 
 
         switch (command) {
             case "add":
@@ -30,7 +34,7 @@ public class TaskTrackerCLIApp {
                 }
                 break;
             default:
-                System.out.println("Invalid command");
+                System.out.println("#################### Invalid command! Syntax: java TaskTrackerCLIApp <command> [argument]");
         }
 
         taskManager.storeTasksToJson();

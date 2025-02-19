@@ -8,25 +8,24 @@ import java.util.Scanner;
 
 public class TaskManager {
 
-    ArrayList<Task> arrayList;
+    ArrayList<Task> arrayList = new ArrayList<>();;
 
     // ************ CONSTRUCTOR ************
 
     public TaskManager() {
 
-        arrayList = new ArrayList<>();
-
         // Creating a file "tasks.json"
         File jsonFile = new File("tasks.json");
         try {
-            jsonFile.createNewFile();
+            if(!jsonFile.createNewFile()){
+                // Fetching data from tasks.json and saving to arraylist
+                this.getTasksFromJson();
+            }
         } catch (IOException e) {
             System.out.println("Error while creating json.");
             e.printStackTrace();
         }
 
-        // Fetching data from tasks.json and saving to arraylist
-        this.getTasksFromJson();
     }
 
     // ************ METHODS ************
@@ -37,25 +36,29 @@ public class TaskManager {
     }
 
     void update(int id, String taskName) {
-        
+        Task task = arrayList.get(id);
+        task.setDescription(taskName);
     }
 
     void delete(int id) {
-        System.out.println("Inside delete method");
+        arrayList.remove(id);
     }
 
     void markInProgress(int id) {
-        System.out.println("Inside markInProgress method");
+        Task task = arrayList.get(id);
+        task.setStatus(Status.PROGRESS);
+        task.setUpdatedAt(LocalDateTime.now());
     }
 
     void markDone(int id) {
-        System.out.println("Inside markDone method");
+        Task task = arrayList.get(id);
+        task.setStatus(Status.DONE);
+        task.setUpdatedAt(LocalDateTime.now());
     }
 
     void list() {
-        System.out.println(arrayList.size());
         for (int i = 0; i < arrayList.size(); i++) {
-            System.out.println("Index " + i + ": " +arrayList.get(i).getDescription());
+            System.out.println(arrayList.get(i));
         }
     }
 
@@ -82,7 +85,7 @@ public class TaskManager {
             FileWriter jsonFileWriter = new FileWriter("tasks.json");
             jsonFileWriter.write("[\n");
             for (int i = 0; i < arrayList.size(); i++) {
-                // arrayList.get(i).setId(i);
+                arrayList.get(i).setId(i);
                 // Creating a task as StringBuilder object for json
                 StringBuilder taskStringObject = new StringBuilder(
                         "{\"id\":\"" + (arrayList.get(i).getId()) + "\", \"description\":\""
@@ -111,7 +114,7 @@ public class TaskManager {
             Scanner jsonReader = new Scanner(jsonFile);
             while (jsonReader.hasNextLine()) {
                 String data = jsonReader.nextLine();
-                // process this data from json, convert to task object and save to arraylist
+                // // process this data from json, convert to task object and save to arraylist
                 if (data.equals("[") || data.equals("]") || data.equals("\n") || data.isEmpty() || data == null) {
                     continue;
                 }
@@ -120,11 +123,10 @@ public class TaskManager {
                     if (individualObject.endsWith("}")) {
                         individualObject = individualObject.replace("}", "");
                     }
-                    String[] individualObjectBrokenToArray = individualObject.replace(",", "").split(" ");
-
+                    String[] individualObjectBrokenToArray = individualObject.split(", ");
                     Task task = new Task(individualObjectBrokenToArray[1].split("\":")[1].replace("\"", ""));
                     task.setId(Integer.parseInt(individualObjectBrokenToArray[0].split("\":")[1].replace("\"", "")));
-                    switch (individualObjectBrokenToArray[2].split("\":")[1]) {
+                    switch (individualObjectBrokenToArray[2].split("\":")[1].replace("\"", "")) {
                         case "TODO":
                             task.setStatus(Status.TODO);
                             break;
@@ -134,6 +136,8 @@ public class TaskManager {
                         case "DONE":
                             task.setStatus(Status.DONE);
                             break;
+                        default:
+                            System.out.println("Invalid Status found!");
                     }
                     task.setCreatedAt(LocalDateTime.parse(individualObjectBrokenToArray[3].split("\":")[1].replace("\"", "")));
                     task.setUpdatedAt(LocalDateTime.parse(individualObjectBrokenToArray[4].split("\":")[1].replace("\"", "")));
