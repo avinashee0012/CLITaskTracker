@@ -4,7 +4,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class TaskManager {
 
@@ -63,19 +65,31 @@ public class TaskManager {
     }
 
     void list(String filter) {
-        getTasksFromJson();
+        List<Task> filteredArrayList;
         switch (filter) {
             case "done":
                 System.out.println("Listing done tasks");
+                filteredArrayList = arrayList.stream().filter(t -> t.getStatus() == Status.DONE).collect(Collectors.toList());
+                for (Task task : filteredArrayList) {
+                    System.out.println(task);
+                }
                 break;
             case "todo":
                 System.out.println("Listing todo tasks");
+                filteredArrayList = arrayList.stream().filter(t -> t.getStatus() == Status.TODO).collect(Collectors.toList());
+                for (Task task : filteredArrayList) {
+                    System.out.println(task);
+                }
                 break;
             case "in-progress":
                 System.out.println("Listing in-progress tasks");
+                filteredArrayList = arrayList.stream().filter(t -> t.getStatus() == Status.PROGRESS).collect(Collectors.toList());
+                for (Task task : filteredArrayList) {
+                    System.out.println(task);
+                }
                 break;
             default:
-                System.out.println("Invalid argument");
+                System.out.println("################## Invalid search argument. Syntax: java TaskTrackerCLIApp list <filterArgument>");
         }
     }
 

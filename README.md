@@ -1,4 +1,4 @@
-# CLI Task Tracker Application
+# [COMPLETE] CLI Task Tracker Application
 
 TaskTrackerCLIApp is a CLI app to track tasks and manage to-do list.
 
