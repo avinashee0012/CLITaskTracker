@@ -38,24 +38,43 @@ public class TaskManager {
     }
 
     void update(int id, String taskName) {
-        Task task = arrayList.get(id);
-        task.setDescription(taskName);
+        if (id >= 0 && id < arrayList.size()) {
+            Task task = arrayList.get(id);
+            task.setDescription(taskName);
+            task.setUpdatedAt(LocalDateTime.now());
+        } else {
+            System.out.println("############## Invalid input: Id not found.");
+        }
     }
 
     void delete(int id) {
-        arrayList.remove(id);
+        if (id >= 0 && id < arrayList.size()) {
+            arrayList.remove(id);
+        } else {
+            System.out.println("############## Invalid input: Id not found.");
+        }
+        
     }
 
     void markInProgress(int id) {
-        Task task = arrayList.get(id);
-        task.setStatus(Status.PROGRESS);
-        task.setUpdatedAt(LocalDateTime.now());
+        if (id >= 0 && id < arrayList.size()) {
+            Task task = arrayList.get(id);
+            task.setStatus(Status.PROGRESS);
+            task.setUpdatedAt(LocalDateTime.now());
+        } else {
+            System.out.println("############## Invalid input: Id not found.");
+        }
+        
     }
 
     void markDone(int id) {
-        Task task = arrayList.get(id);
-        task.setStatus(Status.DONE);
-        task.setUpdatedAt(LocalDateTime.now());
+        if (id >= 0 && id < arrayList.size()) {
+            Task task = arrayList.get(id);
+            task.setStatus(Status.DONE);
+            task.setUpdatedAt(LocalDateTime.now());
+        } else {
+            System.out.println("############## Invalid input: Id not found.");
+        }
     }
 
     void list() {
