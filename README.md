@@ -20,7 +20,7 @@ cd TaskTrackerCLIApp/src
 ```
 2. Compile the source code
 ```bash
-javac TaskTrackerCLIApp.java Task.java TaskManager.java Status.java -d ./bin/
+javac TaskTrackerCLIApp.java Task.java TaskManager.java Status.java -d ../bin/
 ```
 3. Run the compiled code
 ```bash
@@ -32,7 +32,7 @@ java TaskTrackerCLIApp <command> [arguments]
 ```bash
 # Adding a new task
 java TaskTrackerCLIApp add "Buy groceries"
-# Output: Task added successfully (ID: 1)
+# Output: Task added successfully
 
 # Updating and deleting tasks
 java TaskTrackerCLIApp update 1 "Buy groceries and cook dinner"
