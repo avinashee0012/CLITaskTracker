@@ -24,6 +24,7 @@ javac TaskTrackerCLIApp.java Task.java TaskManager.java Status.java -d ../bin/
 ```
 3. Run the compiled code
 ```bash
+cd ../bin
 java TaskTrackerCLIApp <command> [arguments]
 ```
 
